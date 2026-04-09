@@ -1,0 +1,8 @@
+torch
+torchvision
+matplotlib
+onnx
+onnxruntime
+graphviz
+pillow
+psutil
