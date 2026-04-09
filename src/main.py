@@ -29,9 +29,7 @@ async def main():
         await scenario.pkgresolve()
 
         dashboard = Dashboard(scenario, asyncio.get_event_loop())
-
-        while True:
-            await asyncio.sleep(3600)
+        await dashboard.bootui()
 
     except Exception as ex:
         throw_exec('boot')

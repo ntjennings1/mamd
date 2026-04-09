@@ -220,9 +220,11 @@ class Scenario():
                     print('[!] Installing ' + r)
                     subprocess.check_call([sys.executable, "-m", "pip", "install", str(r)])
                     self.add_package(r)
-                print('[!] Requirements satisfied.')
+                print('[!] Requirement satisfied.')
         except Exception as ex:
             self.throw_exec('pkg')
+        finally:
+            print('[!] All requirements satisfied.')
 
     """ Determines required packages.
 

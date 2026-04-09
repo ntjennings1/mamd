@@ -54,8 +54,12 @@ class Window():
     def set_height(self, height):
         self.height = height
 
+    async def customize(self):
+        print('c')
+
     async def bootui(self):
-        await self.customize()
+        print('[!] Welcome to MAMD')
+        #await self.customize()
         while True:
             self.get_root().update()
             await asyncio.sleep(.1)
