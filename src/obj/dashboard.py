@@ -38,8 +38,10 @@ class Dashboard():
 
     async def bootui(self):
         try:
-            await self.get_window().bootui()
+            print()
+            #await self.get_window().bootui()
         except Exception as ex:
+            print(ex)
             self.throw_exec('boot')
         except KeyboardInterrupt:
             print('[!] Dashboard Shutdown.')

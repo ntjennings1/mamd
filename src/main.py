@@ -29,7 +29,7 @@ async def main():
         await scenario.pkgresolve()
 
         dashboard = Dashboard(scenario, asyncio.get_event_loop())
-        await dashboard.bootui()
+        #await dashboard.bootui()
 
     except Exception as ex:
         throw_exec('boot')
@@ -47,4 +47,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("\n[!] Server shutdown.")
     except Exception as ex:
+        print(ex)
         throw_exec('main')
