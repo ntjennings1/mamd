@@ -12,10 +12,10 @@ from obj.scenario import Scenario
 """
 def throw_exec(mes):
 
-    if (mes == 'main'):
-        print("\n\n[!] Error running main function.")
-    elif (mes == 'boot'):
-        print("\n\n[!] Error booting UI.")
+	if (mes == 'main'):
+		print("\n\n[!] Error running main function.")
+	elif (mes == 'boot'):
+		print("\n\n[!] Error booting UI.")
 
 """ Declare/use server object.
 
@@ -23,16 +23,19 @@ def throw_exec(mes):
 """
 async def main():
 
-    try:
-        scenario = Scenario()
-        await scenario.reqresolve()
-        await scenario.pkgresolve()
+	try:
+		scenario = Scenario()
+		await scenario.reqresolve()
+		await scenario.pkgresolve()
 
-        dashboard = Dashboard(scenario, asyncio.get_event_loop())
-        #await dashboard.bootui()
+		dashboard = Dashboard(scenario, asyncio.get_event_loop())
+		await dashboard.bootui()
 
-    except Exception as ex:
-        throw_exec('boot')
+		while True:
+			await asyncio.sleep(3600)
+
+	except Exception as ex:
+		throw_exec('boot')
 
 """ Runs the async main function.
 
@@ -40,12 +43,12 @@ async def main():
 """
 if __name__ == '__main__':
 
-    try:
-        asyncio.run(main())
-    except asyncio.CancelledError:
-        print("\n\n[!] Tasks were cancelled.")
-    except KeyboardInterrupt:
-        print("\n[!] Server shutdown.")
-    except Exception as ex:
-        print(ex)
-        throw_exec('main')
+	try:
+		asyncio.run(main())
+	except asyncio.CancelledError:
+		print("\n\n[!] Tasks were cancelled.")
+	except KeyboardInterrupt:
+		print("\n[!] Server shutdown.")
+	except Exception as ex:
+		print(ex)
+		throw_exec('main')
