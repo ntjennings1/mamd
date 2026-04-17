@@ -176,6 +176,7 @@ class Window():
 
 			await self.get_viewer().customize()
 			self.get_viewer().place(1,1)
+			self.get_viewer().grid_configure(padx=(0,50))
 			self.get_viewer().grid_configure(pady=(0,50))
 
 		except Exception as ex:
@@ -192,12 +193,20 @@ class Window():
 			print(ex)
 			self.throw_exec('fill')
 
-	async def config(self, mes):
+	async def config(self, which):
 		try:
-			if (mes == 'land'):
+			if (which == 'land'):
 				#self.get_root().overrideredirect(True)
 				self.get_root().resizable(False, False)
 				self.get_root().attributes('-topmost', True)
+			elif (which == 'test'):
+				self.get_dashboard().set_mode('test')
+				await self.get_viewer().config('test')
+				await self.get_controller().config('test')
+			elif (which == 'train'):
+				self.get_dashboard().set_mode('train')
+				await self.get_viewer().config('train')
+				await self.get_controller().config('train')
 		except Exception as ex:
 			print(ex)
 			self.throw_exec('config')

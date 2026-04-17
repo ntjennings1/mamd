@@ -48,18 +48,60 @@ class Viewer(tk.Frame):
 	def throw_exec(self, mes):
 		if (mes == 'cust'):
 			print('[ERR] Error customizing viewer.')
+		elif (mes == 'place'):
+			print('[ERR] Error placing viewer.')
+		elif (mes == 'line'):
+			print('[ERR] Error adding line to viewer.')
+		elif (mes == 'clear'):
+			print('[ERR] Error clearing viewer content.')
+
+	async def clear_lines(self):
+		try:
+			self.get_rview().config(state=tk.NORMAL)
+			self.get_rview().delete('1.0', tk.END)
+			self.get_rview().config(state=tk.DISABLED)
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('clear')
+
+	async def add_line(self, line):
+		try:
+			self.get_rview().config(state=tk.NORMAL)
+			self.get_rview().insert(tk.END, line + '\n')
+			self.get_rview().config(state=tk.DISABLED)
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('line')
+
+	async def config(self, which):
+		if (which == 'test'):
+			await self.clear_lines()
+			await self.add_line('[-->] Test Mode.')
+			await self.add_line('')
+			await self.add_line('Start by selecting a model to analyze and test.')
+		elif (which == 'train'):
+			await self.clear_lines()
+			await self.add_line('[-->] Train Mode.')
+			await self.add_line('')
+			await self.add_line('Start by selecting your datasets.')
 
 	def place(self, row, col):
-		self.grid(row=row, column=col)
+		try:
+			self.grid(row=row, column=col)
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('place')
 
 	async def customize(self):
 		try:
 			self.set_rview(scrolledtext.ScrolledText(self,
 										wrap='word',
-										width=75,
-										height=5,
-										bg='gray'))
+										width=65,
+										height=4,
+										bg='gray80',
+										state='disabled'))
 			self.get_rview().grid(row=0, column=0)
+			await self.add_line('[-->] Select a mode.')
 		except Exception as ex:
 			print(ex)
 			self.throw_exec('cust')

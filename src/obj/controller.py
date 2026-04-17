@@ -75,6 +75,67 @@ class Controller(tk.Frame):
 			print('[ERR] Error customizing controller elements.')
 		elif (mes == 'place'):
 			print('[ERR] Error placing controller.')
+		elif (mes == 'test'):
+			print('[ERR] Error performing test sequence.')
+		elif (mes == 'train'):
+			print('[ERR] Error performing train sequence.')
+		elif (mes == 'reset'):
+			print('[ERR] Error resetting controller.')
+
+	async def reset(self):
+		try:
+			self.get_dashboard().set_mode('')
+			self.get_tbutton().config(bg='chartreuse3',
+										state=tk.NORMAL)
+			self.get_tsbutton().config(bg='gold',
+										state=tk.NORMAL)
+			self.get_rbutton().config(bg='gray80',
+										state=tk.DISABLED)
+			self.get_sbutton().config(bg='gray80',
+										state=tk.DISABLED)
+			await self.get_dashboard().get_window().get_viewer().clear_lines()
+			await self.get_dashboard().get_window().get_viewer().add_line('[-->] Select a mode.')
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('reset')
+
+	async def train(self):
+		try:
+			await self.get_dashboard().get_window().config('train')
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('train')
+
+	async def test(self):
+		try:
+			await self.get_dashboard().get_window().config('test')
+
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('test')
+
+	async def config(self, which):
+		try:
+			if (which == 'test'):
+				self.get_tbutton().config(bg='gray80',
+											state=tk.DISABLED)
+				self.get_tsbutton().config(state=tk.DISABLED)
+				self.get_rbutton().config(bg='SteelBlue1',
+											state=tk.NORMAL)
+				'''self.get_sbutton().config(bg='brown2',
+											state=tk.NORMAL)'''
+			if (which == 'train'):
+				self.get_tbutton().config(state=tk.DISABLED)
+				self.get_tsbutton().config(bg='gray80',
+											state=tk.DISABLED)
+				self.get_rbutton().config(bg='SteelBlue1',
+											state=tk.NORMAL)
+				'''self.get_sbutton().config(bg='brown2',
+											state=tk.NORMAL)'''
+
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('test')	
 
 	def place(self, row, col):
 		try:
@@ -90,15 +151,16 @@ class Controller(tk.Frame):
 										height=2,
 										state='normal',
 										text='Train',
-										bg='gold',
+										bg='chartreuse3',
 										fg='black',
-										activebackground='gold',
+										activebackground='chartreuse3',
 										activeforeground='black',
 										highlightbackground='black',
 										highlightcolor='black',
 										highlightthickness=1,
 										relief='solid',
-										borderwidth=1))
+										borderwidth=1,
+										command=lambda:self.get_loop().create_task(self.train())))
 			self.get_tbutton().grid(row=0, column=0)
 			self.set_tsbutton(tk.Button(self,
 										width=7,
@@ -113,37 +175,40 @@ class Controller(tk.Frame):
 										highlightcolor='black',
 										highlightthickness=1,
 										relief='solid',
-										borderwidth=1))
+										borderwidth=1,
+										command=lambda:self.get_loop().create_task(self.test())))
 			self.get_tsbutton().grid(row=0, column=1)
 			self.set_rbutton(tk.Button(self,
 										width=7,
 										height=2,
-										state='normal',
+										state='disabled',
 										text='Reset',
-										bg='gold',
+										bg='gray80',
 										fg='black',
-										activebackground='gold',
+										activebackground='SteelBlue1',
 										activeforeground='black',
 										highlightbackground='black',
 										highlightcolor='black',
 										highlightthickness=1,
 										relief='solid',
-										borderwidth=1))
+										borderwidth=1,
+										command=lambda:self.get_loop().create_task(self.reset())))
 			self.get_rbutton().grid(row=0, column=2)
 			self.set_sbutton(tk.Button(self,
 										width=7,
 										height=2,
-										state='normal',
+										state='disabled',
 										text='Stop',
-										bg='gold',
+										bg='gray80',
 										fg='black',
-										activebackground='gold',
+										activebackground='brown1',
 										activeforeground='black',
 										highlightbackground='black',
 										highlightcolor='black',
 										highlightthickness=1,
 										relief='solid',
-										borderwidth=1))
+										borderwidth=1,
+										command=lambda:self.get_loop().create_task(self.reset())))
 			self.get_sbutton().grid(row=0, column=3)
 		except Exception as ex:
 			print(ex)

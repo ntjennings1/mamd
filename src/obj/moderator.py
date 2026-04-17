@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 class Moderator(tk.Frame):
 	def __init__(self, root, dashboard, loop):
@@ -12,7 +13,7 @@ class Moderator(tk.Frame):
 
 		self.content = None
 		self.options = ['Select an option ...']
-		self.oselctor = None
+		self.oselector = None
 
 	def get_root(self):
 		return self.root
@@ -77,8 +78,13 @@ class Moderator(tk.Frame):
 			self.set_content(tk.Frame(self,
 										width=400,
 										height=400,
-										bg='gray'))
+										bg='gray80'))
 			self.get_content().grid(row=0, column=0)
+
+			self.set_oselector(ttk.Combobox(self,
+											values=self.get_options(),
+											state='readonly'))
+			self.get_oselector().grid(row=0, column=0)
 		except Exception as ex:
 			print(ex)
 			self.throw_exec('cust')

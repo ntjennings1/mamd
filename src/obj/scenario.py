@@ -253,7 +253,8 @@ class Scenario():
                 print('[&] Windows system.')
             else:
                 self.set_system('Linux')
-                print('[&] Linux system.')
+                print('[&] Linux systems are prohibitted.')
+                os._exit(0)
 
         except Exception as ex:
             self.throw_exec('read')

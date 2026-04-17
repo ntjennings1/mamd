@@ -25,8 +25,8 @@ async def main():
 
 	try:
 		scenario = Scenario()
-		await scenario.reqresolve()
-		await scenario.pkgresolve()
+		#await scenario.reqresolve()
+		#await scenario.pkgresolve()
 
 		dashboard = Dashboard(scenario, asyncio.get_event_loop())
 		await dashboard.bootui()

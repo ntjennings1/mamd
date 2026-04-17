@@ -6,6 +6,7 @@ class Dashboard():
 		self.loop = loop
 		self.window = Window(self, loop)
 		self.model = None
+		self.mode = ''
 
 	def get_scenario(self):
 		return self.scenario
@@ -30,6 +31,12 @@ class Dashboard():
 
 	def set_model(self, model):
 		self.model = model
+
+	def get_mode(self):
+		return self.mode
+
+	def set_mode(self, mode):
+		self.mode = mode
 
 	def throw_exec(self, mes):
 

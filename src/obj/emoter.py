@@ -36,16 +36,22 @@ class Emoter(tk.Frame):
 	def throw_exec(self, mes):
 		if (mes == 'cust'):
 			print('[ERR] Error customizing emoter.')
+		elif (mes == 'place'):
+			print('[ERR] Error placing emoter.')
 
 	def place(self, row, col):
-		self.grid(row=row, column=col)
+		try:
+			self.grid(row=row, column=col)
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('place')
 
 	async def customize(self):
 		try:
 			self.set_content(tk.Frame(self,
 										width=600,
 										height=400,
-										bg='gray'))
+										bg='gray80'))
 			self.get_content().grid(row=0, column=0)
 		except Exception as ex:
 			print(ex)
