@@ -3,6 +3,7 @@ import sys
 import time
 import asyncio
 import tkinter as tk
+from PIL import Image, ImageTk
 
 from obj.helper import Helper
 from obj.moderator import Moderator
@@ -21,6 +22,9 @@ class Window():
 		self.viewer = None
 		self.helper = None
 
+		self.dir = os.path.dirname(os.path.abspath(__file__))
+		self.fu_logo = None
+		self.fu_path = ''
 		self.width = ''
 		self.height = ''
 		self.screen_width = self.get_root().winfo_screenwidth()
@@ -80,6 +84,24 @@ class Window():
 
 	def set_helper(self, helper):
 		self.helper = helper
+
+	def get_dir(self):
+		return self.dir
+
+	def set_dir(self, dir):
+		self.dir = dir
+
+	def get_fulogo(self):
+		return self.fu_logo
+
+	def set_fulogo(self, fulogo):
+		self.fu_logo = fulogo
+
+	def get_fupath(self):
+		return self.fu_path
+
+	def set_fupath(self, fupath):
+		self.fu_path = fupath
 
 	def get_width(self):
 		return self.width
@@ -162,6 +184,18 @@ class Window():
 
 	async def customize(self):
 		try:
+			src_dir = os.path.dirname(self.get_dir())
+			im_dir = os.path.join(src_dir, "images")
+			self.set_fupath(os.path.join(im_dir, "file_upload.png"))
+
+			l = Image.open(self.get_fupath()).convert("RGBA")
+			w, h = l.size
+			scale = 0.25
+			resized = l.resize((int(w * scale), int(h * scale)), Image.LANCZOS)
+
+			fu = ImageTk.PhotoImage(resized)
+			self.set_fulogo(fu)
+
 			await self.get_moderator().customize()
 			self.get_moderator().place(0,0)
 			self.get_moderator().grid_configure(padx=50, pady=50)
@@ -203,6 +237,7 @@ class Window():
 				self.get_dashboard().set_mode('test')
 				await self.get_viewer().config('test')
 				await self.get_controller().config('test')
+				await self.get_emoter().emote('fu')
 			elif (which == 'train'):
 				self.get_dashboard().set_mode('train')
 				await self.get_viewer().config('train')
