@@ -1,11 +1,12 @@
 from obj.window import Window
+from obj.model import Model
 
 class Dashboard():
 	def __init__(self, scenario, loop):
 		self.scenario = scenario
 		self.loop = loop
 		self.window = Window(self, loop)
-		self.model = None
+		self.model = Model(self, loop)
 		self.mode = ''
 
 	def get_scenario(self):
@@ -42,6 +43,10 @@ class Dashboard():
 
 		if (mes == 'boot'):
 			print('[ERR] Error booting dashboard ui.')
+
+	async def reset(self):
+		self.set_model(Model(self, self.get_loop()))
+		self.set_mode('')
 
 	async def bootui(self):
 		try:

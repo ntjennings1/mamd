@@ -2,16 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 
 class Moderator(tk.Frame):
-	def __init__(self, root, dashboard, loop):
-		super().__init__(root)
+	def __init__(self, root, dashboard, loop, **kwargs):
+		super().__init__(root, **kwargs)
 		self.root = root
 		self.dashboard = dashboard
 		self.loop = loop
 
-		self.width = 200
-		self.height = 600
-
-		self.content = None
+		self.width = 0
+		self.height = 0
 		self.options = ['Select an option ...']
 		self.oselector = None
 
@@ -45,12 +43,6 @@ class Moderator(tk.Frame):
 	def set_height(self, height):
 		self.height = height
 
-	def get_content(self):
-		return self.content
-
-	def set_content(self, content):
-		self.content = content
-
 	def get_options(self):
 		return self.options
 
@@ -75,16 +67,19 @@ class Moderator(tk.Frame):
 
 	async def customize(self):
 		try:
-			self.set_content(tk.Frame(self,
-										width=400,
-										height=400,
-										bg='gray80'))
-			self.get_content().grid(row=0, column=0)
+			self.set_width(400)
+			self.set_height(400)
+			self.config(width=self.get_width(),
+						height=self.get_height(),
+						bg='gray80')
+			self.grid_propagate(False)
+			self.grid_columnconfigure(0, weight=1)
 
 			self.set_oselector(ttk.Combobox(self,
 											values=self.get_options(),
 											state='readonly'))
-			self.get_oselector().grid(row=0, column=0)
+			self.get_oselector().grid(row=0, column=0, sticky='ew')
+
 		except Exception as ex:
 			print(ex)
 			self.throw_exec('cust')

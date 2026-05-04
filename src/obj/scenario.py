@@ -217,14 +217,13 @@ class Scenario():
                 if r in self.get_packages():
                     pass
                 else:
-                    print('[!] Installing ' + r)
+                    print(f'[!] Installing {r}')
                     subprocess.check_call([sys.executable, "-m", "pip", "install", str(r)])
-                    self.add_package(r)
-                print('[!] Requirement satisfied.')
+                    print(f'[!] {r} installed.')
         except Exception as ex:
             self.throw_exec('pkg')
         finally:
-            print('[!] All requirements satisfied.')
+            print('[!] All requirements satisfied')
 
     """ Determines required packages.
 
@@ -238,7 +237,7 @@ class Scenario():
 
             with open (self.get_rfile(), 'r') as req_file:
                 for line in req_file:
-                    self.add_req(line)
+                    self.add_req(line.replace('\n',''))
         except Exception as ex:
             self.throw_exec('req')
 

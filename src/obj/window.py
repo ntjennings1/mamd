@@ -3,7 +3,6 @@ import sys
 import time
 import asyncio
 import tkinter as tk
-from PIL import Image, ImageTk
 
 from obj.helper import Helper
 from obj.moderator import Moderator
@@ -25,6 +24,12 @@ class Window():
 		self.dir = os.path.dirname(os.path.abspath(__file__))
 		self.fu_logo = None
 		self.fu_path = ''
+		self.gr_logo = None
+		self.gr_path = ''
+		self.p_logo = None
+		self.p_path = ''
+		self.a_logo = None
+		self.a_path = ''
 		self.width = ''
 		self.height = ''
 		self.screen_width = self.get_root().winfo_screenwidth()
@@ -102,6 +107,42 @@ class Window():
 
 	def set_fupath(self, fupath):
 		self.fu_path = fupath
+
+	def get_grlogo(self):
+		return self.gr_logo
+
+	def set_grlogo(self, grlogo):
+		self.gr_logo = grlogo
+
+	def get_grpath(self):
+		return self.gr_path
+
+	def set_grpath(self, grpath):
+		self.gr_path = grpath
+
+	def get_plogo(self):
+		return self.p_logo
+
+	def set_plogo(self, plogo):
+		self.p_logo = plogo
+
+	def get_ppath(self):
+		return self.p_path
+
+	def set_ppath(self, ppath):
+		self.p_path = ppath
+
+	def get_alogo(self):
+		return self.a_logo
+
+	def set_alogo(self, alogo):
+		self.a_logo = alogo
+
+	def get_apath(self):
+		return self.a_path
+
+	def set_apath(self, apath):
+		self.a_path = apath
 
 	def get_width(self):
 		return self.width
@@ -184,17 +225,42 @@ class Window():
 
 	async def customize(self):
 		try:
+			from PIL import Image, ImageTk
+
 			src_dir = os.path.dirname(self.get_dir())
 			im_dir = os.path.join(src_dir, "images")
 			self.set_fupath(os.path.join(im_dir, "file_upload.png"))
+			self.set_grpath(os.path.join(im_dir, "route.png"))
+			self.set_ppath(os.path.join(im_dir, "data_dist.png"))
+			self.set_apath(os.path.join(im_dir, "settings.png"))
 
-			l = Image.open(self.get_fupath()).convert("RGBA")
-			w, h = l.size
+			ful = Image.open(self.get_fupath()).convert("RGBA")
+			w, h = ful.size
 			scale = 0.25
-			resized = l.resize((int(w * scale), int(h * scale)), Image.LANCZOS)
-
+			resized = ful.resize((int(w * scale), int(h * scale)), Image.LANCZOS)
 			fu = ImageTk.PhotoImage(resized)
 			self.set_fulogo(fu)
+
+			grl = Image.open(self.get_grpath()).convert("RGBA")
+			w, h = grl.size
+			scale = 0.15
+			gresized = grl.resize((int(w * scale), int(h * scale)), Image.LANCZOS)
+			gr = ImageTk.PhotoImage(gresized)
+			self.set_grlogo(gr)
+
+			pl = Image.open(self.get_ppath()).convert("RGBA")
+			w, h = pl.size
+			scale = 0.15
+			presized = pl.resize((int(w * scale), int(h * scale)), Image.LANCZOS)
+			p = ImageTk.PhotoImage(presized)
+			self.set_plogo(p)
+
+			al = Image.open(self.get_apath()).convert("RGBA")
+			w, h = al.size
+			scale = 0.15
+			aresized = al.resize((int(w * scale), int(h * scale)), Image.LANCZOS)
+			a = ImageTk.PhotoImage(aresized)
+			self.set_alogo(a)
 
 			await self.get_moderator().customize()
 			self.get_moderator().place(0,0)
@@ -231,7 +297,7 @@ class Window():
 		try:
 			if (which == 'land'):
 				#self.get_root().overrideredirect(True)
-				self.get_root().resizable(False, False)
+				#self.get_root().resizable(False, False)
 				self.get_root().attributes('-topmost', True)
 			elif (which == 'test'):
 				self.get_dashboard().set_mode('test')

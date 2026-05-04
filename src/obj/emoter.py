@@ -6,9 +6,10 @@ class Emoter(tk.Frame):
 		super().__init__(root)
 		self.root = root
 		self.dashboard = dashboard
-
 		self.loop = loop
 
+		self.width = 0
+		self.height = 0
 		self.content = None
 		self.logo_section = None
 		self.section_label = None
@@ -30,6 +31,18 @@ class Emoter(tk.Frame):
 
 	def set_loop(self, loop):
 		self.loop = loop
+
+	def get_width(self):
+		return self.width
+
+	def set_width(self, width):
+		self.width = width
+
+	def get_height(self):
+		return self.height
+
+	def set_height(self, height):
+		self.height = height
 
 	def get_content(self):
 		return self.content
@@ -58,9 +71,28 @@ class Emoter(tk.Frame):
 			print('[ERR] Error emoting.')
 		elif (mes == 'file'):
 			print('[ERR] Error fetching model.')
+		elif (mes == 'res'):
+			print('[ERR] Error resetting emoter.')
+
+	async def reset(self):
+		try:
+			if (self.get_lsection() != None):
+				self.get_lsection().grid_forget()
+				self.get_lsection().destroy()
+				self.set_lsection(None)
+
+			if (self.get_slabel() != None):
+				self.get_slabel().grid_forget()
+				self.get_slabel().destroy()
+				self.set_slabel(None)
+
+		except Exception as ex:
+			print(ex)
+			self.throw_exec('res')
 
 	async def emote(self, which):
 		try:
+			
 			if (which == 'fu'):
 				def fu(event):
 					try:
@@ -69,14 +101,34 @@ class Emoter(tk.Frame):
 							filetypes=[("All Files", ".onnx")]
 						)
 						if filepath:
-							print("Selected:", filepath)
+							self.get_dashboard().get_model().set_path(filepath)
+							self.get_loop().create_task(self.get_dashboard().get_model().eval())
 					except Exception as ex:
 						print(ex)
 						self.throw_exec('file')
 
-				self.set_lsection(tk.Label(self,  bg="gray80", image=self.get_dashboard().get_window().get_fulogo()))
+				self.set_lsection(tk.Label(self.get_content(),  bg="gray80", image=self.get_dashboard().get_window().get_fulogo()))
 				self.get_lsection().bind("<Button-1>", fu)
 				self.get_lsection().grid(row=0, column=0)
+
+				self.set_slabel(tk.Label(self.get_content(), bg='gray80', text='Click to select a file'))
+				self.get_slabel().grid(row=1, column=0)
+
+			elif (which == 'aps'):
+				self.set_lsection(tk.Frame(self.get_content(),
+											bg='gray80'))
+				self.get_lsection().grid(row=0, column=0)
+
+				gr_label = tk.Label(self.get_lsection(), bg='gray80', image=self.get_dashboard().get_window().get_grlogo())
+				gr_label.grid(row=0, column=0)
+
+				p_label = tk.Label(self.get_lsection(), bg='gray80', image=self.get_dashboard().get_window().get_plogo())
+				p_label.grid(row=0, column=1)
+				p_label.grid_configure(padx=(50,50))
+
+				a_label = tk.Label(self.get_lsection(), bg='gray80', image=self.get_dashboard().get_window().get_alogo())
+				a_label.grid(row=0, column=2)
+
 		except Exception as ex:
 			print(ex)
 			self.throw_exec('emote')
@@ -90,11 +142,22 @@ class Emoter(tk.Frame):
 
 	async def customize(self):
 		try:
+			self.set_width(600)
+			self.set_height(400)
+			self.config(width=self.get_width(),
+						height=self.get_height(),
+						bg='gray80')
+			self.grid_propagate(False)
+
 			self.set_content(tk.Frame(self,
-										width=600,
-										height=400,
+										width=self.get_width(),
+										height=self.get_height(),
 										bg='gray80'))
-			self.get_content().grid(row=0, column=0)
+			self.get_content().grid(row=0, column=1)
+			self.get_content().grid_propagate(False)
+			self.get_content().grid_columnconfigure(0, weight=1)
+			self.get_content().grid_rowconfigure(0, weight=1)
+
 		except Exception as ex:
 			print(ex)
 			self.throw_exec('cust')

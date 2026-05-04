@@ -93,8 +93,9 @@ class Controller(tk.Frame):
 										state=tk.DISABLED)
 			self.get_sbutton().config(bg='gray80',
 										state=tk.DISABLED)
-			await self.get_dashboard().get_window().get_viewer().clear_lines()
-			await self.get_dashboard().get_window().get_viewer().add_line('[-->] Select a mode.')
+			await self.get_dashboard().get_window().get_viewer().reset()
+			await self.get_dashboard().get_window().get_emoter().reset()
+			await self.get_dashboard().reset()
 		except Exception as ex:
 			print(ex)
 			self.throw_exec('reset')

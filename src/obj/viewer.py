@@ -9,6 +9,8 @@ class Viewer(tk.Frame):
 		self.dashboard = dashboard
 		self.loop = loop
 
+		self.width = 0
+		self.height = 0
 		self.reports = []
 		self.rview = None
 
@@ -29,6 +31,18 @@ class Viewer(tk.Frame):
 
 	def set_loop(self, loop):
 		self.loop = loop
+
+	def get_width(self):
+		return self.width
+
+	def set_width(self, width):
+		self.width = width
+
+	def get_height(self):
+		return self.height
+
+	def set_height(self, height):
+		self.height = height
 
 	def get_reports(self):
 		return self.reports
@@ -54,6 +68,11 @@ class Viewer(tk.Frame):
 			print('[ERR] Error adding line to viewer.')
 		elif (mes == 'clear'):
 			print('[ERR] Error clearing viewer content.')
+
+	async def reset(self):
+		await self.clear_lines()
+		await self.add_line('[-->] Select a mode.')
+
 
 	async def clear_lines(self):
 		try:
@@ -94,10 +113,12 @@ class Viewer(tk.Frame):
 
 	async def customize(self):
 		try:
+			self.set_width(65)
+			self.set_height(4)
 			self.set_rview(scrolledtext.ScrolledText(self,
 										wrap='word',
-										width=65,
-										height=4,
+										width=self.get_width(),
+										height=self.get_height(),
 										bg='gray80',
 										state='disabled'))
 			self.get_rview().grid(row=0, column=0)
