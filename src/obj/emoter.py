@@ -115,18 +115,33 @@ class Emoter(tk.Frame):
 				self.get_slabel().grid(row=1, column=0)
 
 			elif (which == 'aps'):
+				await self.get_dashboard().get_window().get_viewer().clear_lines()
+				await self.get_dashboard().get_window().get_viewer().add_line(f'[-->] {self.get_dashboard().get_model().get_name()} chosen ...')
+				await self.get_dashboard().get_window().get_viewer().add_line('')
+				await self.get_dashboard().get_window().get_viewer().add_line(f'Select an analytics path above.')
+
+				def gr(event):
+					self.get_loop().create_task(self.get_dashboard().get_model().graph())
+				def p(event):
+					self.get_loop().create_task(self.get_dashboard().get_model().perform())
+				def a(event):
+					self.get_loop().create_task(self.get_dashboard().get_model().describe())
+
 				self.set_lsection(tk.Frame(self.get_content(),
 											bg='gray80'))
 				self.get_lsection().grid(row=0, column=0)
 
 				gr_label = tk.Label(self.get_lsection(), bg='gray80', image=self.get_dashboard().get_window().get_grlogo())
+				gr_label.bind("<Button-1>", gr)
 				gr_label.grid(row=0, column=0)
 
 				p_label = tk.Label(self.get_lsection(), bg='gray80', image=self.get_dashboard().get_window().get_plogo())
 				p_label.grid(row=0, column=1)
+				p_label.bind("<Button-1>", p)
 				p_label.grid_configure(padx=(50,50))
 
 				a_label = tk.Label(self.get_lsection(), bg='gray80', image=self.get_dashboard().get_window().get_alogo())
+				a_label.bind("<Button-1>", a)
 				a_label.grid(row=0, column=2)
 
 		except Exception as ex:

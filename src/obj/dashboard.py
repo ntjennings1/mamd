@@ -1,3 +1,4 @@
+import os
 from obj.window import Window
 from obj.model import Model
 
@@ -7,6 +8,9 @@ class Dashboard():
 		self.loop = loop
 		self.window = Window(self, loop)
 		self.model = Model(self, loop)
+
+		self.dir = os.path.dirname(os.path.abspath(__file__))
+		self.odir = None
 		self.mode = ''
 
 	def get_scenario(self):
@@ -32,6 +36,18 @@ class Dashboard():
 
 	def set_model(self, model):
 		self.model = model
+
+	def get_dir(self):
+		return self.dir
+
+	def set_dir(self, dir):
+		self.dir = dir
+
+	def get_odir(self):
+		return self.odir
+
+	def set_odir(self, odir):
+		self.odir = odir
 
 	def get_mode(self):
 		return self.mode

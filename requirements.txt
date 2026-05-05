@@ -16,6 +16,7 @@ numpy==2.4.4
 onnx==1.21.0
 onnx-ir==0.2.1
 onnxruntime==1.25.1
+onnxruntime-gpu==1.25.1
 onnxscript==0.7.0
 packaging==26.2
 pillow==12.2.0

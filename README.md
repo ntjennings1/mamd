@@ -4,7 +4,9 @@ A Maritime AI model dashboard
 
 ## Software Requirements
 ```
-
+- Cuda 12.4.1
+- CudNN 9.21.1
+- Dot 14.1.5
 ```
 
 ## Usage
@@ -19,6 +21,19 @@ python src\main.py
 ```
 
 This will satisfy dependencies and render UI elements.
+
+## Troubleshooting
+
+You may experience runtime errors.
+
+### Packages
+
+Start with your dependencies. Package "xxxx" may need to be updated:
+```
+pip install --upgrade --force-reinstall xxxx
+```
+
+OR otherwise.
 
 ## Acknowledgements
 
