@@ -103,7 +103,6 @@ class Model():
 
 			# End profiling and get the file path
 			profile_file = session.end_profiling()
-			print("Profile saved to:", profile_file)
 		except Exception as ex:
 			print(ex)
 

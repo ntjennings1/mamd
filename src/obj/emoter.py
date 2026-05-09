@@ -14,6 +14,9 @@ class Emoter(tk.Frame):
 		self.logo_section = None
 		self.section_label = None
 
+		self.gr_section = None
+		self.scale = 1.0
+
 	def get_root(self):
 		return self.root
 
@@ -62,6 +65,18 @@ class Emoter(tk.Frame):
 	def set_slabel(self, slabel):
 		self.section_label = slabel
 
+	def get_grsection(self):
+		return self.gr_section
+
+	def set_grsection(self, grsection):
+		self.gr_section = grsection
+
+	def get_scale(self):
+		return self.scale
+
+	def set_scale(self, scale):
+		self.scale = scale
+
 	def throw_exec(self, mes):
 		if (mes == 'cust'):
 			print('[ERR] Error customizing emoter.')
@@ -89,6 +104,13 @@ class Emoter(tk.Frame):
 		except Exception as ex:
 			print(ex)
 			self.throw_exec('res')
+
+	async def edis(self, which):
+		try:
+			if (which == 'gr'):
+				print()
+		except Exception as ex:
+			print(ex)
 
 	async def emote(self, which):
 		try:
