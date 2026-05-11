@@ -17,6 +17,8 @@ class Model():
 		self.ins = []
 		self.outs = []
 
+		self.opath = ''
+
 	def get_dashboard(self):
 		return self.dashboard
 
@@ -71,6 +73,12 @@ class Model():
 	def add_weight(self, weight):
 		self.get_weights().append(weight)
 
+	def get_opath(self):
+		return self.opath
+
+	def set_opath(self, opath):
+		self.opath = opath
+
 	def throw_exec(self, mes):
 		if (mes == 'eval'):
 			print('[ERR] Error evaluating chosen file.')
@@ -108,18 +116,48 @@ class Model():
 
 	async def graph(self):
 		try:
-			import numpy as np
-			import onnx
-			import pydot
-			from onnx.tools.net_drawer import GetPydotGraph, GetOpNodeProducer
+			from PIL import Image, ImageTk
+			import cairosvg
+			import io
 
-			pydot_graph = GetPydotGraph(
-				self.get_model().graph,
-				name=self.get_model().graph.name,
-				rankdir="TB",
-				node_producer=GetOpNodeProducer("docstring")
-			)
-			pydot_graph.write_svg(f"{self.get_dashboard().get_odir()}/{self.get_name()}.svg")
+			await self.get_dashboard().get_window().get_emoter().clear()
+			await self.get_dashboard().get_window().get_emoter().edis('gr')
+
+			def load(path):
+				ext = os.path.splitext(path)[1].lower()
+
+				if ext == ".svg":
+					png_bytes = cairosvg.svg2png(url=path)
+					return Image.open(io.BytesIO(png_bytes))
+
+				return Image.open(path)
+
+			if not os.path.exists(os.path.join(self.get_dashboard().get_odir(), f"{self.get_name()}.svg")):
+				import numpy as np
+				import onnx
+				import pydot
+				from onnx.tools.net_drawer import GetPydotGraph, GetOpNodeProducer
+
+				self.set_opath(os.path.join(self.get_dashboard().get_odir(), f"{self.get_name()}.svg"))
+				pydot_graph = GetPydotGraph(
+					self.get_model().graph,
+					name=self.get_model().graph.name,
+					rankdir="TB",
+					node_producer=GetOpNodeProducer("docstring")
+				)
+				pydot_graph.write_svg(self.get_opath())
+				await asyncio.sleep(1)
+				self.get_dashboard().get_window().get_emoter().set_waiting(False)
+				await self.get_dashboard().get_window().get_emoter().stop_a()
+				self.get_dashboard().get_window().get_emoter().get_grsection().grid(row=1,column=1)
+				self.get_dashboard().get_window().get_emoter().set_grimg(load(self.get_opath()))
+			else:
+				await self.get_dashboard().get_window().get_emoter().clear()
+				await self.get_dashboard().get_window().get_emoter().edis('gr')
+				self.get_dashboard().get_window().get_emoter().set_waiting(False)
+				await self.get_dashboard().get_window().get_emoter().stop_a()
+				self.get_dashboard().get_window().get_emoter().get_grsection().grid(row=1,column=1)
+				self.get_dashboard().get_window().get_emoter().set_grimg(load(self.get_opath()))
 
 		except Exception as ex:
 			print(ex)

@@ -44,7 +44,6 @@ class Scenario():
         self.state = False
 
         self.eval()
-        self.clear_terminal()
 
     """ Returns the systems name.
     
@@ -249,11 +248,12 @@ class Scenario():
         try:
             if (os.name == 'nt'):
                 self.set_system('Windows')
+                self.clear_terminal()
                 print('[&] Windows system.')
             else:
                 self.set_system('Linux')
-                print('[&] Linux systems are prohibitted.')
-                os._exit(0)
+                self.clear_terminal()
+                print('[&] Linux system.')
 
         except Exception as ex:
             self.throw_exec('read')
